@@ -37,8 +37,20 @@ public class QuestionController {
     }
 
     @GetMapping("/quizzes/{quizId}")
-    public ResponseEntity<List<QuestionDto>> getAllQuestionByQuizId(@PathVariable("quizId")Long quizId){
+    public ResponseEntity<List<QuestionDto>> getAllQuestionByQuizId(@PathVariable("quizId") Long quizId) {
         return ResponseEntity.ok(questionService.getAllQuestionByQuizId(quizId));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteQuestion(@PathVariable("id") Long id) {
+        questionService.deleteQuestion(id);
+        return new ResponseEntity<>("Question deleted successfully", NO_CONTENT);
+    }
+
+    @DeleteMapping("/quizzes/{quizId}")
+    public ResponseEntity<String> deleteQuestionsByQuizId(@PathVariable("quizId") Long quizId) {
+        questionService.deleteQuestionsByQuizId(quizId);
+        return new ResponseEntity<>("Multiple Question deleted successfully", NO_CONTENT);
     }
 
 }

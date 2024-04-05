@@ -2,6 +2,7 @@ package com.quiz.quizservice.proxy;
 
 import com.quiz.quizservice.payload.QuestionDto;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -13,5 +14,8 @@ public interface QuestionProxy {
 
     @GetMapping("/api/questions/quizzes/{quizId}")
     List<QuestionDto> getAllQuestionOfQuiz(@PathVariable("quizId") Long quizId);
+
+    @DeleteMapping("/api/questions/quizzes/{quizId}")
+    void deleteQuestionsByQuizId(@PathVariable("quizId") Long quizId);
 
 }

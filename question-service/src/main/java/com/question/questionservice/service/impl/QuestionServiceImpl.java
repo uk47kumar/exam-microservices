@@ -75,7 +75,15 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public void deleteQuestion(Long id) {
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Question not found with id: " + id));
+        questionRepository.delete(question);
+    }
 
+    @Override
+    public void deleteQuestionsByQuizId(Long quizId) {
+        List<Question> questionList = questionRepository.findByQuizId(quizId);
+        questionRepository.deleteAll(questionList);
     }
 
     private QuestionDto mapToDto(Question question) {

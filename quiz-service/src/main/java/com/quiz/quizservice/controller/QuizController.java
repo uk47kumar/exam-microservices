@@ -39,7 +39,7 @@ public class QuizController {
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteQuiz(@PathVariable("id") Long id) {
         quizService.deleteQuiz(id);
-        return new ResponseEntity<>("Quiz deleted successfully", OK);
+        return new ResponseEntity<>("Quiz deleted successfully", NO_CONTENT);
     }
 
 }

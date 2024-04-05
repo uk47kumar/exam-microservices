@@ -73,6 +73,7 @@ public class QuizServiceImpl implements QuizService {
     public void deleteQuiz(Long id) {
         Quiz quiz = quizRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("quiz not found with id: " + id));
+        questionProxy.deleteQuestionsByQuizId(quiz.getId());
         quizRepository.delete(quiz);
     }
 
