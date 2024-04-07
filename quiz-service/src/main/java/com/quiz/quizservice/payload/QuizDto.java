@@ -14,5 +14,7 @@ import java.util.List;
 public class QuizDto {
     private Long id;
     private String title;
+    private Integer maxMarks;
+    private Integer noOfQuestions;
     private List<QuestionDto> questions;
 }

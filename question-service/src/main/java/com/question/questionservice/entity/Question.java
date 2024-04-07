@@ -1,9 +1,6 @@
 package com.question.questionservice.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +16,17 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 1000)
     private String question;
+    @Column(length = 1000)
+    private String answer;
+    @Column(length = 1000)
+    private String option1;
+    @Column(length = 1000)
+    private String option2;
+    @Column(length = 1000)
+    private String option3;
+    @Column(length = 1000)
+    private String option4;
     private Long quizId;
 }
