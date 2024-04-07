@@ -1,6 +1,7 @@
 package com.question.questionservice.service.impl;
 
 import com.question.questionservice.entity.Question;
+import com.question.questionservice.exception.BadRequestException;
 import com.question.questionservice.exception.ResourceNotFoundException;
 import com.question.questionservice.payload.QuestionDto;
 import com.question.questionservice.proxy.QuizProxy;
@@ -10,6 +11,7 @@ import feign.FeignException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +35,10 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public QuestionDto createQuestion(QuestionDto questionDto) {
 
+        if (!isValidAnswer(questionDto)) {
+            throw new BadRequestException("At least one option must be equal to the answer");
+        }
+
         try {
             quizProxy.getQuiz(questionDto.getQuizId());
         } catch (FeignException.NotFound exception) {
@@ -42,6 +48,18 @@ public class QuestionServiceImpl implements QuestionService {
         Question question = mapToEntity(questionDto);
         Question savedQuestion = questionRepository.save(question);
         return mapToDto(savedQuestion);
+    }
+
+    private boolean isValidAnswer(QuestionDto questionDto) {
+
+        String answer = questionDto.getAnswer();
+        String option1 = questionDto.getOption1();
+        String option2 = questionDto.getOption2();
+        String option3 = questionDto.getOption3();
+        String option4 = questionDto.getOption4();
+
+        return !StringUtils.isEmpty(answer) &&
+                (answer.equals(option1) || answer.equals(option2) || answer.equals(option3) || answer.equals(option4));
     }
 
     @Override
