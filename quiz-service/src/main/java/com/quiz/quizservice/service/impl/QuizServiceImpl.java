@@ -2,6 +2,7 @@ package com.quiz.quizservice.service.impl;
 
 import com.quiz.quizservice.entity.Quiz;
 import com.quiz.quizservice.exception.ResourceNotFoundException;
+import com.quiz.quizservice.payload.QuestionDto;
 import com.quiz.quizservice.payload.QuizDto;
 import com.quiz.quizservice.proxy.QuestionProxy;
 import com.quiz.quizservice.repository.QuizRepository;
@@ -10,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +44,15 @@ public class QuizServiceImpl implements QuizService {
         Quiz quiz = quizRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("quiz not found with id: " + id));
 
-        quiz.setQuestions(questionProxy.getAllQuestionOfQuiz(quiz.getId()));
+        List<QuestionDto> allQuestions = questionProxy.getAllQuestionOfQuiz(quiz.getId());
+
+        // shuffle the list of questions randomly
+        Collections.shuffle(allQuestions);
+        // find the no of Question to show
+        int noOfQuestion = quiz.getNoOfQuestions();
+        List<QuestionDto> selectedQuestion = allQuestions.subList(0, Math.min(noOfQuestion, allQuestions.size()));
+
+        quiz.setQuestions(selectedQuestion);
 
         return mapToDto(quiz);
     }
